@@ -1,22 +1,64 @@
 import { Check, ChessQueen, Grid3x3, Swords, Timer } from "lucide-react"
 
-const RightPanel = ({elapsedTime,gameStatus,queenPlaced,boardSize})=>{
+const RightPanel = ({elapsedTime,gameStatus,queenPlaced,boardSize,conflicts})=>{
 
     const hours = Math.floor(elapsedTime / 3600);
     const minutes = Math.floor((elapsedTime % 3600) / 60);
     const seconds = elapsedTime % 60;
+
+    const statusMessage = {
+        "Not Started": {
+            title: "Ready to Play",
+            description: "Start the game to place your queens."
+        },
+        "Running": {
+            title: "Game in Progress",
+            description: "Place your queens without conflicts."
+        },
+        "Paused": {
+            title: "Game Paused",
+            description: "Resume when you're ready."
+        },
+        "Solved": {
+            title: "Solved!",
+            description: `All ${boardSize} queens placed successfully.`
+        }
+    };
+    const statusStyle = {
+        "Not Started": {
+            icon: Grid3x3,
+            color: "bg-purple-400",
+            border: "border-purple-700"
+        },
+        "Running": {
+            icon: Timer,
+            color: "bg-blue-400",
+            border: "border-blue-700"
+        },
+        "Paused": {
+            icon: Timer,
+            color: "bg-yellow-400",
+            border: "border-yellow-700"
+        },
+        "Solved": {
+            icon: Check,
+            color: "bg-green-400",
+            border: "border-green-700"
+        }
+    };
+    const StatusIcon = statusStyle[gameStatus].icon;
 
     const formattedTime = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     return(
         <div className="h-full flex flex-col justify-between">
             {/* Status Card */}
             <section className="flex gap-4 items-center rounded-lg px-4 py-8  border border-[#302044] text-white bg-gradient-to-br from-[#080312] via-[#130525] to-[#200044] ">
-                <div className="flex items-center justify-content-center px-4 py-4 rounded-xl bg-green-400 border-4 border-green-700">
-                    <Check />
+                <div className={`flex items-center justify-center px-4 py-4 rounded-xl border-4 ${statusStyle[gameStatus].color} ${statusStyle[gameStatus].border}`}>
+                    <StatusIcon />
                 </div>
                 <div>
-                    <h1 className="text-2xl">Solved!</h1>
-                    <p>All 8 queens placed successfully</p>
+                    <h1 className="text-2xl">{statusMessage[gameStatus].title}</h1>
+                    <p>{statusMessage[gameStatus].description}</p>
                 </div>
             </section>
             {/* BoardStats */}
@@ -37,7 +79,7 @@ const RightPanel = ({elapsedTime,gameStatus,queenPlaced,boardSize})=>{
                     <h1 className="flex gap-4">
                         <Swords /> Conflicts
                     </h1>
-                    <h3>0</h3>
+                    <h3>{conflicts}</h3>
                 </div>
       
             </section>

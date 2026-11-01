@@ -1,16 +1,15 @@
-import { useState } from "react";
 import queenImage from "../assets/leftpanel.png";
 import { Play, RotateCcw } from "lucide-react";
 const LeftPanel = ({boardSize,onBoardSizeChange,onStart,onReset,onPause}) => {
    
 
-    const decrementFnc = ()=>{
-        onBoardSizeChange(prev=>Math.max(prev-1,4));
-    }
+    const decrementFnc = () => {
+    onBoardSizeChange(Math.max(boardSize - 1, 4));
+    };
 
-    const incrementFnc = ()=>{
-        onBoardSizeChange(prev => Math.min(prev+1,8));
-    }
+    const incrementFnc = () => {
+    onBoardSizeChange(Math.min(boardSize + 1, 8));
+    };
     return (
         <div className="bg-gradient-to-br from-[#080312] via-[#130525] to-[#200044] rounded-2xl overflow-hidden">
 
